@@ -3,6 +3,8 @@
 """
 Task2. Cocktail machine. Abstract factory pattern. Singleton.
 """
+from abstract_factory_pattern.drinks import *
+import abc
 
 
 class SingletonMeta(type):
@@ -18,51 +20,44 @@ class SingletonMeta(type):
         return cls._instance
 
 
-class Drinks(object):
-    """
-    Singleton
-    """
-    __metaclass__ = SingletonMeta
-
-    def __init__(self, drinks):
-        self._drinks = drinks
-
-    def get_type(self):
-        return self._drinks
-
-
-class CocktailMachine(object):
+class CocktailMachine(metaclass=abc.ABCMeta):
     """
     Abstract factory
     """
-    def get_drink(self, drink):
-        raise NotImplementedError()
+    def get_grog(self):
+        raise NotImplemented()
 
+    def get_mojito(self):
+        raise NotImplemented()
 
-class AlcoholDrink(object):
-    def __init__(self, name):
-        self._name = name
-
-    def __str__(self):
-        return self._name
-
-
-class NonAlcoholDrink(object):
-    def __init__(self, name):
-        self._name = name
-
-    def __str__(self):
-        return self._name
+    def get_curacao(self):
+        raise NotImplemented()
 
 
 class AlcoholDrinkMachine(CocktailMachine):
-    def get_drink(self, drink):
-        return AlcoholDrink("Alcoholic " + drink)
+    __metaclass__ = SingletonMeta
+
+    def get_grog(self):
+        return AlcoholGrog()
+
+    def get_mojito(self):
+        return AlcoholMojito()
+
+    def get_curacao(self):
+        return AlcoholBlueCuracao()
 
 
 class NonAlcoholicDrinkMachine(CocktailMachine):
-    def get_drink(self, drink):
-        return NonAlcoholDrink("Non-Alcoholic " + drink)
+    __metaclass__ = SingletonMeta
+
+    def get_grog(self):
+        return NonAlcoholGrog()
+
+    def get_mojito(self):
+        return NonAlcoholMojito()
+
+    def get_curacao(self):
+        return NonAlcoholBlueCuracao()
 
 
 def get_factory(ident):
@@ -74,10 +69,10 @@ def get_factory(ident):
 
 def choose_drinks():
     drinks = -1
-    while int(drinks) not in range(1, 6):
+    while int(drinks) not in range(1, 4):
         try:
-            drinks = int(input("Please, select cocktail:\n\n1)Mojito\n2)Blue Curacao\n3)Mulled wine\n\
-4)Grog\n5)Punch\n\n> "))
+            drinks = int(input("Please, select cocktail:\n\n1)Mojito\n2)Blue Curacao\n\
+3)Grog\n\n> "))
         except ValueError:
             print("That's not an int!")
             drinks = 0
@@ -102,8 +97,15 @@ def main():
         factory = get_factory(0)
     else:
         factory = get_factory(1)
-    drinks = Drinks(["Mojito", "Blue Curacao", "Mulled wine", "Grog", "Punch"])
-    print(factory.get_drink(drinks.get_type()[drink - 1]))
+
+    if drink == 1:
+        drink = factory.get_mojito()
+    elif drink == 2:
+        drink = factory.get_curacao()
+    else:
+        drink = factory.get_grog()
+
+    print("\nGet: " + drink.get_type())
 
 
 if __name__ == "__main__":
