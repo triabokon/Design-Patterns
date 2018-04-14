@@ -10,6 +10,7 @@ class Packing(Enum):
     FOIL = 0
     PAPER = 1
 
+
 class Production(object):
     def template_method(self, mass, toping, chocolate, package):
         self.loading_products()
@@ -39,10 +40,11 @@ class CheesecakeProductsProd(Production):
         print("1) Loading products")
 
     def select_parameters(self, mass, toping, chocolate):
-        if chocolate :
+        if chocolate:
             print("2) Cheesecake " + str(mass) + "g with " + str(toping) + ", with chocolate")
         else:
             print("2) Cheesecake " + str(mass) + "g with " + str(toping) + ", without chocolate")
+
     def production(self):
         print("3) We are doing cheesecake :)")
 
@@ -55,7 +57,7 @@ class CheesecakeProductsProd(Production):
     def forming_packages(self):
         print("5) We are forming package with cakes")
 
+
 if __name__ == "__main__":
     CheesecakeProductsProd = CheesecakeProductsProd()
     CheesecakeProductsProd.template_method(1.2, "banana", True, Packing.FOIL)
-
